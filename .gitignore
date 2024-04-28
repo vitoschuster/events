@@ -4,3 +4,11 @@
 bin
 *_templ.go*
 tmp
+*.iml
+*.ipr
+*.iws
+.idea/
+/build/
+/dist/
+/out/
+.DS_Store
