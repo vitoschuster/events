@@ -11,7 +11,7 @@ func TestHomePage(t *testing.T) {
 		t.Error(err)
 	}
 
-	if !strings.Contains(comp, "Car Show Example App") {
-		t.Errorf("Expected Car Show Example App', got '%s'", comp)
+	if !strings.Contains(comp, "Events Example App") {
+		t.Errorf("Expected Events Example App', got '%s'", comp)
 	}
 }

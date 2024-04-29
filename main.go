@@ -8,8 +8,8 @@ import (
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-	"github.com/sikozonpc/fullstackgo/handlers"
-	"github.com/sikozonpc/fullstackgo/store"
+	"github.com/vitoschuster/events/handlers"
+	"github.com/vitoschuster/events/store"
 )
 
 func main() {
@@ -37,10 +37,10 @@ func main() {
 	handler := handlers.New(store)
 
 	router.HandleFunc("/", handler.HandleHome).Methods("GET")
-	router.HandleFunc("/cars", handler.HandleListCars).Methods("GET")
-	router.HandleFunc("/cars", handler.HandleAddCar).Methods("POST")
-	router.HandleFunc("/cars/{id}", handler.HandleDeleteCar).Methods("DELETE")
-	router.HandleFunc("/cars/search", handler.HandleSearchCar).Methods("GET")
+	router.HandleFunc("/events", handler.HandleListEvents).Methods("GET")
+	router.HandleFunc("/events", handler.HandleAddEvent).Methods("POST")
+	router.HandleFunc("/events/{id}", handler.HandleDeleteEvent).Methods("DELETE")
+	router.HandleFunc("/events/search", handler.HandleSearchEvent).Methods("GET")
 
 	// serve files in public
 	router.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))

@@ -1,44 +1,50 @@
 package views
 
-import "github.com/sikozonpc/fullstackgo/types"
-import "github.com/sikozonpc/fullstackgo/components"
+import "github.com/vitoschuster/events/types"
+import "github.com/vitoschuster/events/components"
 import "strconv"
 
-templ Cars(cars []types.Car, isAddingCar bool) {
+templ Events(events []types.Event, isAddingEvent bool) {
 	@Page(true) {
 		<div class="flex flex-col justify-center items-center">
 			<h1 class="text-3xl font-bold text-center my-4">
-				Cars List
+				Events List
 			</h1>
 			<div class="flex w-2/3 my-4 mx-2 justify-around m-a">
-				if isAddingCar {
+				if isAddingEvent {
 					<form
-						hx-post="/cars"
+						hx-post="/events"
 						hx-swap="afterbegin"
-						hx-target="#car-list"
+						hx-target="#event-list"
 					>
 						<input
 							type="text"
-							name="brand"
-							placeholder="Brand"
+							name="location"
+							placeholder="location"
 							autocomplete="off"
 						/>
 						<input
 							type="text"
-							name="make"
-							placeholder="Make"
+							name="time"
+							placeholder="Time"
 							autocomplete="off"
 						/>
 						<input
 							type="text"
-							name="model"
-							placeholder="Model"
+							name="name"
+							placeholder="Name"
 							autocomplete="off"
 						/>
 						<input
-							type="text"
-							name="year"
-							placeholder="Year"
+                            type="text"
+                            name="description"
+                            placeholder="Description"
+                            autocomplete="off"
+                        />
+						<input
+							type="number"
+							name="price"
+							placeholder="Price"
 							autocomplete="off"
 						/>
 						<input
@@ -55,34 +61,34 @@ templ Cars(cars []types.Car, isAddingCar bool) {
 					</form>
 				} else {
 					<input
-						hx-get="/cars/search"
+						hx-get="/events/search"
 						hx-trigger="keyup changed delay:500ms"
 						type="text"
 						hx-swap="outerHTML"
-						hx-target="#car-list"
+						hx-target="#event-list"
 						hx-trigger="keyup changed delay:500ms"
 						name="search"
-						placeholder="Search for a car"
+						placeholder="Search for an event"
 						autocomplete="off"
 						class="m-a"
 					/>
 				}
 				<button
 					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-					hx-get="/cars"
+					hx-get="/events"
 					hx-swap="outerHTML"
 					hx-target="body"
-					name="isAddingCar"
-					value={ templ.EscapeString(strconv.FormatBool(!isAddingCar)) }
+					name="isAddingEvent"
+					value={ templ.EscapeString(strconv.FormatBool(!isAddingEvent)) }
 				>
-					if isAddingCar {
+					if isAddingEvent {
 						Cancel 
 					} else {
-						Add Car
+						Add Event
 					}
 				</button>
 			</div>
-			@components.CarsList(cars)
+			@components.EventsList(events)
 		</div>
 	}
 }

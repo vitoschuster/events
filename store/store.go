@@ -3,7 +3,7 @@ package store
 import (
 	"database/sql"
 
-	"github.com/sikozonpc/fullstackgo/types"
+	"github.com/vitoschuster/events/types"
 )
 
 type Storage struct {
@@ -11,10 +11,10 @@ type Storage struct {
 }
 
 type Store interface {
-	CreateCar(car *types.Car) (*types.Car, error)
-	GetCars() ([]types.Car, error)
-	DeleteCar(id string) error
-	FindCarsByNameMakeOrBrand(search string) ([]types.Car, error)
+	CreateEvent(event *types.Event) (*types.Event, error)
+	GetEvents() ([]types.Event, error)
+	DeleteEvent(id string) error
+	FindEventsByLocationNameOrDesc(search string) ([]types.Event, error)
 }
 
 func NewStore(db *sql.DB) *Storage {
@@ -23,13 +23,13 @@ func NewStore(db *sql.DB) *Storage {
 	}
 }
 
-func (s *Storage) DeleteCar(id string) error {
-	_, err := s.db.Exec("DELETE FROM cars WHERE id = ?", id)
+func (s *Storage) DeleteEvent(id string) error {
+	_, err := s.db.Exec("DELETE FROM events WHERE id = ?", id)
 	return err
 }
 
-func (s *Storage) CreateCar(c *types.Car) (*types.Car, error) {
-	row, err := s.db.Exec("INSERT INTO cars (brand, make, model, year, imageURL) VALUES (?, ?, ?, ?, ?)", c.Brand, c.Make, c.Model, c.Year, c.ImageURL)
+func (s *Storage) CreateEvent(c *types.Event) (*types.Event, error) {
+	row, err := s.db.Exec("INSERT INTO events (location, event_time, name, description, price, imageURL) VALUES (?, ?, ?, ?, ?)", c.Location, c.EventTime, c.Name, c.Description, c.Price, c.ImageURL)
 	if err != nil {
 		return nil, err
 	}
@@ -43,46 +43,46 @@ func (s *Storage) CreateCar(c *types.Car) (*types.Car, error) {
 	return c, nil
 }
 
-func (s *Storage) GetCars() ([]types.Car, error) {
-	rows, err := s.db.Query("SELECT * FROM cars")
+func (s *Storage) GetEvents() ([]types.Event, error) {
+	rows, err := s.db.Query("SELECT * FROM events")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var cars []types.Car
+	var events []types.Event
 	for rows.Next() {
-		car, err := scanCar(rows)
+		event, err := scanEvent(rows)
 		if err != nil {
 			return nil, err
 		}
-		cars = append(cars, car)
+		events = append(events, event)
 	}
 
-	return cars, nil
+	return events, nil
 }
 
-func (s *Storage) FindCarsByNameMakeOrBrand(search string) ([]types.Car, error) {
-	rows, err := s.db.Query("SELECT * FROM cars WHERE brand LIKE ? OR model LIKE ? OR make LIKE ?", "%"+search+"%", "%"+search+"%", "%"+search+"%")
+func (s *Storage) FindEventsByLocationNameOrDesc(search string) ([]types.Event, error) {
+	rows, err := s.db.Query("SELECT * FROM events WHERE location LIKE ? OR name LIKE ? OR description LIKE ?", "%"+search+"%", "%"+search+"%", "%"+search+"%")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var cars []types.Car
+	var events []types.Event
 	for rows.Next() {
-		car, err := scanCar(rows)
+		event, err := scanEvent(rows)
 		if err != nil {
 			return nil, err
 		}
-		cars = append(cars, car)
+		events = append(events, event)
 	}
 
-	return cars, nil
+	return events, nil
 }
 
-func scanCar(row *sql.Rows) (types.Car, error) {
-	var car types.Car
-	err := row.Scan(&car.ID, &car.Brand, &car.Make, &car.Model, &car.Year, &car.ImageURL, &car.CreatedAt)
-	return car, err
+func scanEvent(row *sql.Rows) (types.Event, error) {
+	var event types.Event
+	err := row.Scan(&event.ID, &event.Location, &event.EventTime, &event.Name, &event.Description, &event.Price, &event.ImageURL)
+	return event, err
 }

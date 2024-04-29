@@ -1,0 +1,26 @@
+package components
+
+import "github.com/vitoschuster/events/types"
+import "fmt"
+
+templ EventTile(event *types.Event) {
+	<li
+		id={ fmt.Sprintf("event-%d", event.ID) }
+		class="flex flex-col w-1/4 bg-gray-200 rounded-md shadow-md p-4 m-4  border-gray-300 content-center justify-between text-center"
+	>
+		<span class="text-sm text-gray-900 mb-4">{ event.Name }: { event.Location } { event.EventTime } from { event.Price }</span>
+		<img
+			src={ event.ImageURL }
+			alt={ event.ImageURL }
+			class="w-full h-32 object-cover rounded-md mb-4"
+		/>
+		<button
+			hx-delete={ fmt.Sprintf("/events/%d", event.ID) }
+			hx-swap="delete"
+			hx-target={ fmt.Sprintf("#event-%d", event.ID) }
+			class="text-red-500 px-2"
+		>
+			Delete
+		</button>
+	</li>
+}

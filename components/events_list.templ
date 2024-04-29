@@ -1,0 +1,11 @@
+package components
+
+import "github.com/vitoschuster/events/types"
+
+templ EventsList(events []types.Event) {
+	<ul id="event-list" class="flex my-4 flex-wrap m-auto w-2/3">
+		for _, event := range events {
+            @EventTile
+		}
+	</ul>
+}

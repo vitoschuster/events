@@ -8,7 +8,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	mysqlMigrate "github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/sikozonpc/fullstackgo/store"
+	"github.com/vitoschuster/events/store"
 )
 
 func main() {

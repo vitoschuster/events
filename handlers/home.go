@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/sikozonpc/fullstackgo/views"
+	"github.com/vitoschuster/events/views"
 )
 
 func (h *Handler) HandleHome(w http.ResponseWriter, r *http.Request) {
